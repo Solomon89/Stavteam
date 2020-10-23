@@ -1,0 +1,26 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - microblog</title>
+    {% else %}
+    <title>Welcome to microblog</title>
+    {% endif %}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+      <h1>Hello, {{user}}!</h1>
+{% raw %}
+	<div id="app">
+             {{ message }}
+        </div>
+{% endraw %}
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Привет, Vue!'
+  }
+})
+</script>
+  </body>
+</html>
