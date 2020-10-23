@@ -6,7 +6,9 @@ app.debug = True
 
 
 
-
+@app.route('/info')
+def info():
+    return 'info test'
 
 
 from app import views
