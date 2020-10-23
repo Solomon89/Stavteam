@@ -8,7 +8,7 @@ PWD = 'password'
 
 def makeSession(userId):
     uid = str(uuid.uuid4())
-    sql = '''INSERT INTO sessions (session,userID,loginTime)
+    sql = '''INSERT INTO public.sessions(session, "userID", "loginTime")
      VALUES
            (\'''' + uid + '''\',
             ''' + str(userId) + ''',NOW()::timestamp)'''
@@ -18,7 +18,7 @@ def makeSession(userId):
 
 
 def killSession(uid):
-    sql = "delete FROM sessions where session='" + uid + "'"
+    sql = "delete FROM public.sessions where session='" + uid + "'"
     execSQL(sql, True, False)
     return True
 
