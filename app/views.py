@@ -15,7 +15,7 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     param = request.get_json()
-    sql = "select users.* where LOGIN='%s'" % param['userName']
+    sql = "SELECT * FROM public.users where ""userName""='%s'" % param['userName']
     rows = dbFunctions.execSQL(sql, None, True)
     if len(rows) > 0:
         for row in rows:
