@@ -27,7 +27,11 @@
       });
 
       Vue.component('app-footer', {
-        template: require('./main/footer.html')
+        template: `
+            <footer>
+              <div style="display: none"></div>
+            </footer>
+          `
       });
 
       var app = new Vue({
