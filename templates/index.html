@@ -11,13 +11,14 @@
   <body>    
     {% raw %}
     <div id="app">
-      <cp-header></cp-header> 
+      <app-header></app-header> 
       {{ message }}
+      <app-footer></app-footer>
     </div>
     {% endraw %}
     
     <script>
-      Vue.component('cp-header', {
+      Vue.component('app-header', {
         template: `
             <header class="sticky">
                 <h1>StavTeam: ЦП2020</h1>
@@ -25,10 +26,14 @@
         `
       });
 
+      Vue.component('app-footer', {
+        template: '<div style="display: none"></div>'
+      });
+
       var app = new Vue({
         el: '#app',
         data: {
-          message: 'Привет, Vue!'
+          message: ''
         }
       })
     </script>
