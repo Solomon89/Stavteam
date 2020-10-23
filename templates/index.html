@@ -20,14 +20,14 @@
     <script>
       Vue.component('app-header', {
         template: `
-            <header class="sticky">
-                <h1>StavTeam: ЦП2020</h1>
-            </header>
+          <header class="sticky">
+              <h1>StavTeam: ЦП2020</h1>
+          </header>
         `
       });
 
       Vue.component('app-footer', {
-        template: '<div style="display: none"></div>'
+        template: require('./main/footer.html')
       });
 
       var app = new Vue({
