@@ -4,11 +4,12 @@ import pyodbc
 from stavteam import app
 import uuid
 from flask import abort
+import psycopg2
 
 SERVER = ''
-DATABASE = ''
-UID = ''
-PWD = ''
+DATABASE = 'stavteamdb'
+UID = 'stavuser'
+PWD = 'password'
 
 deleteInterval = 3600
 
@@ -24,8 +25,8 @@ def checkToNull(param):
 
 
 def execSQL(sql, param, needFeatch):
-    cnxn = pyodbc.connect(
-        'DRIVER={SQL Server};SERVER=' + SERVER + ';DATABASE=' + DATABASE + ';UID=' + UID + ';PWD=' + PWD)
+    cnxn = psycopg2.connect(dbname=DATABASE, user=UID,
+                            password=PWD, host='localhost')
     cursor = cnxn.cursor()
     cursor.execute(sql)
     if needFeatch:
@@ -42,32 +43,21 @@ def execSQL(sql, param, needFeatch):
         return ids
 
 
-def makeSession(userId, LPU):
+def makeSession(userId):
     uid = str(uuid.uuid4())
-    sql = '''INSERT INTO [reanim].[dbo].[sessions]
-           ([SESSION]
-           ,[userID]
-           ,[LPU]
-           ,[loginTime])
+    sql = '''INSERT INTO sessions (session,userID,loginTime)
      VALUES
            (\'''' + uid + '''\',
-            ''' + str(userId) + ''',
-            ''' + str(LPU) + ''',GETDATE())'''
-    param = [uid, userId, LPU]
+            ''' + str(userId) + ''',NOW()::timestamp)'''
+    param = [uid, userId]
     execSQL(sql, param, False)
     return uid
 
 
 def killSession(uid):
-    sql = "delete FROM [reanim].[dbo].[sessions] where [SESSION]=N'" + uid + "'"
+    sql = "delete FROM sessions where session='" + uid + "'"
     execSQL(sql, True, False)
     return True
-
-
-def killExpiredSessions(interval):
-    sql = '''DELETE FROM [reanim].[dbo].[sessions]
-               where DATEDIFF(SECOND,[reanim].[dbo].[sessions].loginTime,GETDATE())>''' + str(interval)
-    execSQL(sql, True, False)
 
 
 @app.route('/')
@@ -79,13 +69,13 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     param = request.get_json()
-    sql = "select users.*,LPU.nameLPU from users left join LPU on LPU.ID=users.LPU where LOGIN='%s'" % param['userName']
+    sql = "select users.* where LOGIN='%s'" % param['userName']
     rows = execSQL(sql, None, True)
     if len(rows) > 0:
         for row in rows:
-            if row[6].strip() == param['userPass']:
-                uid = makeSession(row[0], row[4])
-                userInfo = {'FAM': row[1], 'IM': row[2], 'OT': row[3], 'SESSION': uid, 'LPU': row[7]}
+            if row[2].strip() == param['userPass']:
+                uid = makeSession(row[0])
+                userInfo = {'FAM': row[4], 'IM': row[5], 'OT': row[6], 'SESSION': uid}
                 return jsonify(userInfo)
         abort(401)
     else:
