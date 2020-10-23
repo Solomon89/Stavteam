@@ -5,21 +5,19 @@
     {% else %}
     <title>Welcome to microblog</title>
     {% endif %}
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
-  <body>
-    <header is="Header"></header> 
-    
+  <body>    
     {% raw %}
     <div id="app">
+      <cp-header></cp-header> 
       {{ message }}
     </div>
     {% endraw %}
     
     <script>
-      Vue.component('Header', {
+      Vue.component('cp-header', {
         template: `
             <header class="sticky">
                 <h1>StavTeam: ЦП2020</h1>
