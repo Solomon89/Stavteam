@@ -18,7 +18,13 @@
     {% endraw %}
     
     <script>
-
+      Vue.component('Header', {
+        template: `
+            <header class="sticky">
+                <h1>StavTeam: ЦП2020</h1>
+            </header>
+        `
+      });
 
       var app = new Vue({
         el: '#app',
