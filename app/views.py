@@ -88,7 +88,7 @@ def getgraphInfo(event_id):
 
 def getWayToRecorderIdStatus(id):
     if(id%2 == 0):
-        return "static\\Oscillogramm\\04JUL205"
+        return "static//Oscillogramm//04JUL205"
     else:
-        return "static\\Oscillogramm\\04APR163"
+        return "static//Oscillogramm//04APR163"
     
