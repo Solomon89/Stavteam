@@ -36,6 +36,16 @@ def logout():
         return 'OK'
 
 
+@app.route('/lineInfo', methods=['POST'])
+def getLineInfo():
+    param = request.get_json()
+    if dbFunctions.checkSession(param['session']):
+        lineStatuses = dbFunctions.getlineStatus(param['lineId'])
+        return jsonify(lineStatuses)
+    else:
+        abort(401)
+
+
 @app.route('/map', methods=['POST'])
 def getMap():
     param = request.get_json()

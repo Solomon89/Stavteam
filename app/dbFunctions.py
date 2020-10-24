@@ -30,15 +30,18 @@ def killSession(uid):
 
 
 def getlineStatus(lineId):
-    sql = 'SELECT linestatus.* FROM public.linestatus where linestatus.line_id=' + str(
-        lineId) + ' order by linestatus.id desc'
+    sql = ('SELECT linestatus.*,statuses."Name" FROM public.linestatus '+
+           ' left outer join public.statuses on linestatus.status_id = statuses.id '+
+           ' where linestatus.line_id=' + str(lineId) +
+           ' order by linestatus.id desc')
     lineStatuses = execSQL(sql, True, True)
     lineStatusesJSON = {}
     for lineStatus in lineStatuses:
         lineStatusesJSON[lineStatus[0]] = {'dateOfEvent': lineStatus[1],
                                            'fileName': lineStatus[2],
                                            'statusId': lineStatus[3],
-                                           'lineId': lineStatus[4]}
+                                           'lineId': lineStatus[4],
+                                           'statusName': lineStatus[5]}
 
 def getLinks():
     sql = "SELECT links.* FROM public.links"
