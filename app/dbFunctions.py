@@ -1,7 +1,7 @@
 import psycopg2
 import uuid
 
-SERVER = ''
+SERVER = '176.118.165.45'
 DATABASE = 'stavteamdb'
 UID = 'stavuser'
 PWD = 'password'
@@ -18,13 +18,13 @@ def makeSession(userId):
 
 
 def killSession(uid):
-    sql = "delete FROM public.sessions where session='" + uid + "'"
+    sql = "delete FROM public.sessions where sessions.session='" + uid + "'"
     execSQL(sql, True, False)
     return True
 
 def execSQL(sql, param, needFeatch):
     cnxn = psycopg2.connect(dbname=DATABASE, user=UID,
-                            password=PWD, host='localhost')
+                            password=PWD, host=SERVER)
     cursor = cnxn.cursor()
     cursor.execute(sql)
     if needFeatch:
