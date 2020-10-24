@@ -41,11 +41,11 @@ def _file_name_match_patern(pattern, name):
 
 def _mirror_ftp_dir(ftp, name, overwrite, guess_by_extension, pattern):
     for item in ftp.nlst(ftp.pwd()):
-        if _is_ftp_dir(item, guess_by_extension):
-            _mirror_ftp_dir(item, overwrite, guess_by_extension, pattern)
+        if _is_ftp_dir(ftp, item, guess_by_extension):
+            _mirror_ftp_dir(ftp, item, overwrite, guess_by_extension, pattern)
         else:
             if _file_name_match_patern(pattern, name):
-                _download_ftp_file(item, item, overwrite)
+                _download_ftp_file(ftp, item, item, overwrite)
             else:
                 pass
 
