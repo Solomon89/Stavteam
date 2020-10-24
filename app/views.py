@@ -26,7 +26,12 @@ def login():
         abort(401)
     else:
         abort(401)
+@app.route('/login', methods=['Get'])
+def loginGet():
 
+
+        userInfo = {'FAM': "jsdhj", 'IM': "sdsd", 'OT': "fgfg", 'SESSION': "123"}
+        return jsonify(userInfo)
 
 @app.route('/logout', methods=['POST'])
 def logout():
