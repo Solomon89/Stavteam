@@ -28,9 +28,9 @@ def login():
         abort(401)
 @app.route('/login', methods=['Get'])
 def loginGet():
-
-
-        userInfo = {'FAM': "jsdhj", 'IM': "sdsd", 'OT': "fgfg", 'SESSION': "123"}
+        sql = "SELECT * FROM public.users"
+        rows = dbFunctions.execSQL(sql, None, True)
+        userInfo = {'FAM': rows}
         return jsonify(userInfo)
 
 @app.route('/logout', methods=['POST'])
