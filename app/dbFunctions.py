@@ -18,7 +18,7 @@ def makeSession(userId):
 
 
 def killSession(uid):
-    sql = "delete FROM public.sessions where session='" + uid + "'"
+    sql = "delete FROM public.sessions where sessions.session='" + uid + "'"
     execSQL(sql, True, False)
     return True
 
