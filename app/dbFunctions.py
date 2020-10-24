@@ -6,6 +6,11 @@ DATABASE = 'stavteamdb'
 UID = 'stavuser'
 PWD = 'password'
 
+def checkSession(uid):
+    ##killExpiredSessions(deleteInterval)
+    sql="select sessions.* FROM public.sessions where sessions.session='"+uid+"'"
+    rows = execSQL(sql,None,True)
+    return len(rows)>0
 
 def makeSession(userId):
     uid = str(uuid.uuid4())
@@ -36,7 +41,7 @@ def getlineStatus(lineId):
                                            'lineId': lineStatus[4]}
 
 
-def getLines(needFullInfo):
+def getLines(needFullInfo=False):
     sql = "SELECT line.* FROM public.line"
     lines = execSQL(sql, True, True)
     linesJSON = {}
@@ -53,7 +58,7 @@ def getLines(needFullInfo):
     return linesJSON
 
 
-def getStations(needFullInfo):
+def getStations(needFullInfo=False):
     sql = "SELECT station.* FROM public.station"
     stations = execSQL(sql, True, True)
     stationsJSON = {}

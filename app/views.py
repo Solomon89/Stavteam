@@ -34,3 +34,14 @@ def logout():
     param = request.get_json()
     if dbFunctions.killSession(param['session']):
         return 'OK'
+
+@app.route('/map', methods=['GET'])
+def getMap()
+    param = request.get_json()
+    if dbFunctions.checkSession(param['session']):
+        lines=dbFunctions.getLines()
+        stations=dbFunctions.getStations()
+        return jsonify({'lines':lines,
+                       'stations':stations})
+    else:
+        abort(401)
