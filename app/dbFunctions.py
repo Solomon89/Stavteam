@@ -1,13 +1,18 @@
 import psycopg2
 import uuid
 
+deleteInterval=3600
 SERVER = '176.118.165.45'
 DATABASE = 'stavteamdb'
 UID = 'stavuser'
 PWD = 'password'
 
+def killExpiredSessions(interval):
+    sql='''delete FROM public.sessions WHERE extract(epoch  from (now()::timestamp-"loginTime"))>'''+str(interval)
+    execSQL(sql,True,False)
+
 def checkSession(uid):
-    ##killExpiredSessions(deleteInterval)
+    killExpiredSessions(deleteInterval)
     sql="select sessions.* FROM public.sessions where sessions.session='"+uid+"'"
     rows = execSQL(sql,None,True)
     return len(rows)>0
