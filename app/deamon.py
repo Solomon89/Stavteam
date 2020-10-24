@@ -75,16 +75,19 @@ def timerKillSessions(interval):
 
 
 def timerCheckFTP(interval):
-    stations = dbFunctions.getStations(True)
-    for station in stations:
-        ftpAdress = stations[station]['ftpAdress']
-        ftpUser = stations[station]['ftpUser']
-        ftpPass = stations[station]['ftpPassword']
-        ftp = ftplib.FTP(ftpAdress, ftpUser, ftpPass)
-        ftp.login(ftpUser, ftpPass)
-        remote_dir = ".."  # Путь к файлам на сервере FTP
-        local_dir = r'путь к локальному хранилищу'
-        download_ftp_tree(station, ftp, remote_dir, local_dir, overwrite=False, guess_by_extension=True)
+    data = threading.local()
+    while True:
+        time.sleep(interval)
+        stations = dbFunctions.getStations(True)
+        for station in stations:
+            ftpAdress = stations[station]['ftpAdress']
+            ftpUser = stations[station]['ftpUser']
+            ftpPass = stations[station]['ftpPassword']
+            ftp = ftplib.FTP(ftpAdress, ftpUser, ftpPass)
+            ftp.login(ftpUser, ftpPass)
+            remote_dir = ".."  # Путь к файлам на сервере FTP
+            local_dir = r'путь к локальному хранилищу'
+            download_ftp_tree(station, ftp, remote_dir, local_dir, overwrite=False, guess_by_extension=True)
 
 
 deleteInterval = 3600
