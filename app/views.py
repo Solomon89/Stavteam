@@ -79,7 +79,7 @@ def graphs(event_id):
 
 @app.route('/getgraph/<int:event_id>/<int:id>/<path:typeGraph>')
 def getgraph(event_id =0, id = 0,typeGraph = "analog"):
-    way = dbFunctions.getEventFilePath(0)
+    way = dbFunctions.getEventFilePath(event_id)
     data = graph.GetGraphs(way,id,typeGraph)
     return  data
 
