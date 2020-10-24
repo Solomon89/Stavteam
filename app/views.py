@@ -61,8 +61,8 @@ def getMap():
             recorderOutStation = stations[recorderOut['stationId']]
             coordInStation = {'lat': recorderInStation['lat'], 'lon': recorderInStation['lon']}
             coordOutStation = {'lat': recorderOutStation['lat'], 'lon': recorderOutStation['lon']}
-            lines = {link: {'coordInStation': coordInStation,
-                            'coordOutStation': coordOutStation}}
+            lines[link] = {'coordInStation': coordInStation,
+                           'coordOutStation': coordOutStation}
         return jsonify({'lines': lines,
                         'stations': stations})
     else:
