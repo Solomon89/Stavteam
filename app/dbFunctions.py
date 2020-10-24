@@ -84,7 +84,8 @@ def getStations(needFullInfo=False):
                                         'lon': station[2],
                                         'lat': station[3],
                                         'ftpAdress': station[4],
-                                        'ftpPassword': station[5]}
+                                        'ftpPassword': station[5],
+                                        'ftpUser': station[6]}
         else:
             stationsJSON[station[0]] = {'name': station[1],
                                         'lon': station[2],
