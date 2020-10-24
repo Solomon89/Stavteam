@@ -136,5 +136,14 @@ def getEventFilePath(eventId):
 
 def newEvent(station, filename):
     sql = ('INSERT INTO public.linestatus(dateofevent, filename, line_id) ' +
-           " VALUES ('" + str(graph.getEventDate(filename)) + "', '" + filename + "', " + station + ");")
+           " VALUES ('" + str(graph.getEventDate(filename)) + "', '" + filename + "', " + station + ") "+
+           'RETURNING id')
     execSQL(sql, True, False)
+
+def getStatuses():
+    sql = "SELECT * FROM public.statuses"
+    rows = execSQL(sql, True, True)
+    statuses={}
+    for row in rows:
+        statuses[row[0]]={'name':row[1]}
+    return statuses
