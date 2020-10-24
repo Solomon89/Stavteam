@@ -1,23 +1,12 @@
-from pyComtrade import pyComtrade
-import pylab
+import matplotlib.pyplot as plt
+from comtrade import Comtrade
 
-comtradeObj = pyComtrade.ComtradeRecord(r'B:\COMPTRADE\04JUL205.cfg')
-comtradeObj.ReadDataFile()
+rec = Comtrade()
+rec.load(r'B:\COMPTRADE\04JUL205.cfg')
+print("Trigger time = {}s".format(rec.trigger_time))
 
-N = comtradeObj.getNumberOfSamples()
-
-AnalogChannelData = comtradeObj.getAnalogChannelData(1)
-DigitalChannelData = comtradeObj.getDigitalChannelData(1)
-
-time = comtradeObj.getTime()
-f, axarr = pylab.subplots(2, sharex=True)
-
-axarr[0].plot(time, AnalogChannelData)
-axarr[0].set_title('pyComtrade Demo')
-axarr[0].grid()
-axarr[1].plot(time, DigitalChannelData)
-axarr[1].set_ylim(top=1.05)
-axarr[1].grid()
-axarr[1].set_xlabel('Time [s]')
-
-pylab.show()
+plt.figure()
+plt.plot(rec.time, rec.digital[4])
+print(type(rec.digital[4]))
+plt.legend([rec.digital_channel_ids[0]])
+plt.show()
