@@ -3,6 +3,9 @@ from flask import jsonify, request
 from stavteam import app
 from flask import abort
 from app import dbFunctions
+from app import graph 
+
+
 
 deleteInterval = 3600
 
@@ -45,3 +48,8 @@ def getMap():
                        'stations':stations})
     else:
         abort(401)
+
+@app.route('/graph')
+def getgraph():
+        data = graph.GetGraphs("C:\\data\\04APR163")
+        return  jsonify(data)
