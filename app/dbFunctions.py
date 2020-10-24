@@ -40,22 +40,30 @@ def getlineStatus(lineId):
                                            'statusId': lineStatus[3],
                                            'lineId': lineStatus[4]}
 
+def getLinks():
+    sql = "SELECT links.* FROM public.links"
+    links = execSQL(sql, True, True)
+    linksJSON = {}
+    for link in links:
+        linksJSON[link[0]] = {'idRecorderIn': link[1],
+                              'idRecorderOut': link[2]}
+    return linksJSON
 
-def getLines(needFullInfo=False):
-    sql = "SELECT line.* FROM public.line"
-    lines = execSQL(sql, True, True)
-    linesJSON = {}
-    for line in lines:
+def getRecorders(needFullInfo=False):
+    sql = "SELECT recorder.* FROM public.recorder"
+    recorders = execSQL(sql, True, True)
+    recordersJSON = {}
+    for recorder in recorders:
         if needFullInfo:
-            linesJSON[line[0]] = {'stationId': line[1],
-                                  'name': line[2],
-                                  'direction': line[3],
-                                  'folder': line[4]}
+            recordersJSON[recorder[0]] = {'stationId': recorder[1],
+                                  'name': recorder[2],
+                                  'direction': recorder[3],
+                                  'folder': recorder[4]}
         else:
-            linesJSON[line[0]] = {'stationId': line[1],
-                                  'name': line[2],
-                                  'direction': line[3]}
-    return linesJSON
+            recordersJSON[recorder[0]] = {'stationId': recorder[1],
+                                  'name': recorder[2],
+                                  'direction': recorder[3]}
+    return recordersJSON
 
 
 def getStations(needFullInfo=False):
