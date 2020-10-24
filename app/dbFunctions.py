@@ -1,21 +1,25 @@
 import psycopg2
 import uuid
+from app import graph
 
-deleteInterval=3600
+deleteInterval = 3600
 SERVER = '176.118.165.45'
 DATABASE = 'stavteamdb'
 UID = 'stavuser'
 PWD = 'password'
 
+
 def killExpiredSessions(interval):
-    sql='''delete FROM public.sessions WHERE extract(epoch  from (now()::timestamp-"loginTime"))>'''+str(interval)
-    execSQL(sql,True,False)
+    sql = '''delete FROM public.sessions WHERE extract(epoch  from (now()::timestamp-"loginTime"))>''' + str(interval)
+    execSQL(sql, True, False)
+
 
 def checkSession(uid):
     killExpiredSessions(deleteInterval)
-    sql="select sessions.* FROM public.sessions where sessions.session='"+uid+"'"
-    rows = execSQL(sql,None,True)
-    return len(rows)>0
+    sql = "select sessions.* FROM public.sessions where sessions.session='" + uid + "'"
+    rows = execSQL(sql, None, True)
+    return len(rows) > 0
+
 
 def makeSession(userId):
     uid = str(uuid.uuid4())
@@ -35,8 +39,8 @@ def killSession(uid):
 
 
 def getlineStatus(lineId):
-    sql = ('SELECT linestatus.*,statuses."Name" FROM public.linestatus '+
-           ' left outer join public.statuses on linestatus.status_id = statuses.id '+
+    sql = ('SELECT linestatus.*,statuses."Name" FROM public.linestatus ' +
+           ' left outer join public.statuses on linestatus.status_id = statuses.id ' +
            ' where linestatus.line_id=' + str(lineId) +
            ' order by linestatus.id desc')
     lineStatuses = execSQL(sql, True, True)
@@ -48,6 +52,7 @@ def getlineStatus(lineId):
                                            'lineId': lineStatus[4],
                                            'statusName': lineStatus[5]}
 
+
 def getLinks():
     sql = "SELECT links.* FROM public.links"
     links = execSQL(sql, True, True)
@@ -57,6 +62,7 @@ def getLinks():
                               'idRecorderOut': link[2]}
     return linksJSON
 
+
 def getRecorders(needFullInfo=False):
     sql = "SELECT recorder.* FROM public.recorder"
     recorders = execSQL(sql, True, True)
@@ -64,13 +70,13 @@ def getRecorders(needFullInfo=False):
     for recorder in recorders:
         if needFullInfo:
             recordersJSON[recorder[0]] = {'stationId': recorder[1],
-                                  'name': recorder[2],
-                                  'direction': recorder[3],
-                                  'folder': recorder[4]}
+                                          'name': recorder[2],
+                                          'direction': recorder[3],
+                                          'folder': recorder[4]}
         else:
             recordersJSON[recorder[0]] = {'stationId': recorder[1],
-                                  'name': recorder[2],
-                                  'direction': recorder[3]}
+                                          'name': recorder[2],
+                                          'direction': recorder[3]}
     return recordersJSON
 
 
@@ -121,7 +127,14 @@ def checkToNull(param):
         s = " '" + param + "',"
     return s
 
+
 def getEventFilePath(eventId):
-    sql = "SELECT linestatus.filename FROM public.linestatus where linestatus.id="+str(eventId)
+    sql = "SELECT linestatus.filename FROM public.linestatus where linestatus.id=" + str(eventId)
     recorders = execSQL(sql, True, True)
     return recorders[0][0]
+
+
+def newEvent(station, filename):
+    sql = ('INSERT INTO public.linestatus(dateofevent, filename, line_id) ' +
+           " VALUES ('" + str(graph.getEventDate(filename)) + "', '" + filename + "', " + station + ");")
+    execSQL(sql, True, False)
