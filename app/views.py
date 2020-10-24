@@ -35,7 +35,7 @@ def logout():
     if dbFunctions.killSession(param['session']):
         return 'OK'
 
-@app.route('/map', methods=['GET'])
+@app.route('/map', methods=['POST'])
 def getMap():
     param = request.get_json()
     if dbFunctions.checkSession(param['session']):
