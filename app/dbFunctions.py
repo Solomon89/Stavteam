@@ -135,15 +135,42 @@ def getEventFilePath(eventId):
 
 
 def newEvent(station, filename):
-    sql = ('INSERT INTO public.linestatus(dateofevent, filename, line_id) ' +
-           " VALUES ('" + str(graph.getEventDate(filename)) + "', '" + filename + "', " + station + ") "+
-           'RETURNING id')
+    eventDate, analogLineCount, digitalLineCount = graph.getEventInfo(filename)
+    sql = ('INSERT INTO public.linestatus(dateofevent, filename, line_id, "analogLineCount", "digitalLineCount") ' +
+           " VALUES ('" + str(eventDate) + "', '" + filename + "', " + station +
+           "," + str(analogLineCount) + "," + str(digitalLineCount) + ") ")
     execSQL(sql, True, False)
+
+
+def updateEvent(id, params):
+    sql = ('UPDATE public.linestatus SET status_id=' + str(params['Type']) +
+           ", timeof='" + params['TimeOf'] + "', apv='" + params['APV'] +
+           "', distancetokz='" + params['distanceToKZ'] + "' " +
+           'WHERE id=' + str(id))
+    execSQL(sql, True, False)
+
 
 def getStatuses():
     sql = "SELECT * FROM public.statuses"
     rows = execSQL(sql, True, True)
-    statuses={}
+    statuses = {}
     for row in rows:
-        statuses[row[0]]={'name':row[1]}
+        statuses[row[0]] = {'name': row[1]}
     return statuses
+
+
+def getUnProcssedEvents():
+    sql = "SELECT linestatus.* FROM public.linestatus where linestatus.status_id is NULL"
+    lineStatuses = execSQL(sql, True, True)
+    lineStatusesJSON = {}
+    for lineStatus in lineStatuses:
+        lineStatusesJSON[lineStatus[0]] = {'dateOfEvent': lineStatus[1],
+                                           'fileName': lineStatus[2],
+                                           'statusId': lineStatus[3],
+                                           'lineId': lineStatus[4],
+                                           'timeOf': lineStatus[5],
+                                           'apv': lineStatus[6],
+                                           'distanceToKz': lineStatus[7],
+                                           'analogLineCount': lineStatus[8],
+                                           'digitalLineCount': lineStatus[9]}
+    return lineStatusesJSON

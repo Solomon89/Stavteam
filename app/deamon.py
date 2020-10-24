@@ -4,6 +4,7 @@ from app import dbFunctions
 import ftplib
 import os
 import re
+from app import CNN
 
 
 def _is_ftp_dir(ftp, name, guess_by_extension=True):
@@ -90,11 +91,33 @@ def timerCheckFTP(interval):
             download_ftp_tree(station, ftp, remote_dir, local_dir, overwrite=False, guess_by_extension=True)
 
 
+def autoprocessing(interval):
+    data = threading.local()
+    while True:
+        time.sleep(interval)
+        events = dbFunctions.getUnProcssedEvents()
+        for event in events:
+            filePath = events[event]['fileName']
+            if ((os.path.exists(filePath + '.cfg') and os.path.exists(filePath + '.dat')) or
+                    (os.path.exists(filePath + '.CFG') and os.path.exists(filePath + '.DAT'))):
+                processingResult = CNN.EvristicAnalisis(event, filePath, events[event]['analogLineCount'])
+                if processingResult is not None:
+                    dbFunctions.updateEvent(event, processingResult)
+
+
 deleteInterval = 3600
 deamonDeleteSession = threading.Thread(target=timerKillSessions, name="killSessions", args=(deleteInterval,),
                                        daemon=True)
 deamonDeleteSession.start()
+
 ##Настройка FTP
 ##checkFTPInterval = 600
 ##deamonCheckFTP = threading.Thread(target=timerCheckFTP, name="checkFTP", args=(checkFTPInterval,), daemon=True)
 ##deamonCheckFTP.start()
+
+
+# Автообработчик
+autoprocessingInterval = 300
+deamonAutoprocessing = threading.Thread(target=autoprocessing, name="autoprocessing", args=(autoprocessingInterval,),
+                                        daemon=True)
+deamonAutoprocessing.start()
