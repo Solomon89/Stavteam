@@ -36,7 +36,7 @@ def logout():
         return 'OK'
 
 @app.route('/map', methods=['GET'])
-def getMap()
+def getMap():
     param = request.get_json()
     if dbFunctions.checkSession(param['session']):
         lines=dbFunctions.getLines()
