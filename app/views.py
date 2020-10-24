@@ -3,7 +3,7 @@ from flask import jsonify, request
 from stavteam import app
 from flask import abort
 from app import dbFunctions
-from app import graph 
+from app import graph
 
 
 
@@ -49,7 +49,24 @@ def getMap():
     else:
         abort(401)
 
-@app.route('/graph')
-def getgraph():
-        data = graph.GetGraphs("C:\\data\\04APR163")
-        return  jsonify(data)
+@app.route('/graph/<int:event_id>')
+def graphs(event_id):
+    return render_template("graph.html")
+
+@app.route('/getgraph/<int:event_id>/<int:id>/<path:typeGraph>')
+def getgraph(event_id =0, id = 0,typeGraph = "analog"):
+    way = getWayToRecorderIdStatus(0)
+    data = graph.GetGraphs(way,id,typeGraph)
+    return  data
+@app.route('/getgraph/<int:event_id>')
+def getgraphInfo(event_id):
+    way = getWayToRecorderIdStatus(event_id)
+    data = graph.GetGraphInfo(way)
+    return jsonify(data)
+
+def getWayToRecorderIdStatus(id):
+    if(id%2 == 0):
+        return "static\\Oscillogramm\\04JUL205"
+    else:
+        return "static\\Oscillogramm\\04APR163"
+    
