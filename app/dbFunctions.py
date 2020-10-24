@@ -120,3 +120,8 @@ def checkToNull(param):
     else:
         s = " '" + param + "',"
     return s
+
+def getEventFilePath(eventId):
+    sql = "SELECT linestatus.filename FROM public.linestatus where linestatus.id="+str(eventId)
+    recorders = execSQL(sql, True, True)
+    return recorders[0][0]
