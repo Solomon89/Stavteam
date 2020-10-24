@@ -28,5 +28,6 @@ def SaveAPT2( synaptic_weights):
     a = 1
 
 def EvristicAnalisis(id, way, numberOfLines):
-    _return = {"Type" : "Однофазное замыкание на фазе A", "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
+    _return = {"Type" : 1, "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
+    #dbFunctions.getStatuses() - получение всех статусов {id:{'name':name}}
     return _return

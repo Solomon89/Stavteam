@@ -45,7 +45,7 @@ def get_cmap(n, name='hsv'):
     RGB color; the keyword argument name must be a standard mpl colormap name.'''
     return plt.cm.get_cmap(name, n % 255)
 
-def getEventDate(filename):
+def getEventInfo(filename):
     rec = Cfg()
     rec.load(filename)
-    return rec.start_timestamp
+    return rec.start_timestamp, rec.analog_count, rec.digital_count
