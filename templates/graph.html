@@ -14,19 +14,27 @@
         {{svg}}
 
         <div v-if="EvristicAnalisis!= null">
-            <div>
-                Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Аналитика</h5>
+                    <p class="card-text">
+                        <div>
+                            Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
+                        </div>
+
+                        <div>
+                            Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
+                        </div>
+                        <div>
+                            АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
+                        </div>
+                        <div>
+                            Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
+                        </div>
+                    </p>
+                </div>
             </div>
 
-            <div>
-                Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
-            </div>
-            <div>
-                АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
-            </div>
-            <div>
-                Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
-            </div>
         </div>
         <div v-if="graphs!= null">
             <div v-for="(item, index) in graphs.analog" style="width: 100%;">
