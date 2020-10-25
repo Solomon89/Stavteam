@@ -1,4 +1,5 @@
 import tensorflow as tf
+from comtrade import Comtrade
 
 def TrainCNN(array):
     (x_train, y_train), (x_test, y_test) = array
@@ -29,5 +30,49 @@ def SaveAPT2( synaptic_weights):
 
 def EvristicAnalisis(id, way, analogLineCount):
     _return = {"Type" : 1, "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
-    #dbFunctions.getStatuses() - получение всех статусов {id:{'name':name}}
+    way += ".cfg"
+    for i in range(1, analogLineCount + 1):
+        (kz1, t1) = findShorCircuit(way, i * 4)
+        (kz2, t2) = findShorCircuit(way, i * 4 + 1)
+        (kz3, t3) = findShorCircuit(way, i * 4 + 2)
+        (kz4, t4) = findShorCircuit(way, i * 4 + 3)
+        if kz1 + kz2 + kz3 != 0:
+            return {"Type" : kz1 + kz2 + kz3, "TimeOf": str(max([t1, t2, t3, t4])*100) + 'ms',
+                    "APV":"Успешно","distanceToKZ":"2.145км" }
     return _return
+
+
+def findShorCircuit(file_path, phases):
+    rec = Comtrade()
+    rec.load(file_path)
+    # normal_i = np.mean(np.array(rec.analog[phases]))
+    normal_i = rec.analog[phases][0]
+    normal_delta_i = 0.0015
+    time1 = 0
+    time2 = 0
+    short_circuit = False
+    for i in range(0, len(rec.analog[phases]) - 2):
+        roll = rec.analog[phases][i: i + 3]
+        roll_type = extremum(roll)
+        if roll_type == 0 or roll_type == 1:
+            if abs(roll[1]) - normal_i > normal_delta_i:
+                if not short_circuit:
+                    short_circuit = True
+                    time1 = i
+            else:
+                if short_circuit:
+                    time2 = i
+                    break
+    return short_circuit, rec.time[time2] - rec.time[time1]
+
+
+def extremum(roll):
+    if roll[0] < roll[1] > roll[2]:
+         return 0  # local max
+    if roll[0] > roll[1] < roll[2]:
+        return 1  # local_min
+    if roll[0] > roll[1] > roll[2]:
+        return 2  # decreases
+    if roll[0] < roll[1] < roll[2]:
+        return 3  # increases
+    return -1
