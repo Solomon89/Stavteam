@@ -36,7 +36,7 @@ def GetGraphs(way, id, type):
 def GetGraphInfo(way):
     rec = Comtrade()
     rec.load(way + ".cfg", way + ".dat")
-    data = {"analog" : rec.analog_channel_ids[:7], "digital" : rec.digital_channel_ids[:3], "time": format(rec.trigger_time), "name":rec.station_name, "time_base" : rec.time_base}
+    data = {"analog" : rec.analog_channel_ids[:10], "digital" : rec.digital_channel_ids[:6], "time": format(rec.trigger_time), "name":rec.station_name, "time_base" : rec.time_base}
     return data
 
 
