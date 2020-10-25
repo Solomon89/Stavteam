@@ -29,20 +29,31 @@ def SaveAPT2( synaptic_weights):
     a = 1
 
 def EvristicAnalisis(id, way, analogLineCount):
-    _return = {"Type" : 1, "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
+    _return = {"Type" : "", "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
     way += ".cfg"
     for i in range(1, analogLineCount + 1):
-        (kz1, t1) = findShorCircuit(way, i * 4)
-        (kz2, t2) = findShorCircuit(way, i * 4 + 1)
-        (kz3, t3) = findShorCircuit(way, i * 4 + 2)
-        (kz4, t4) = findShorCircuit(way, i * 4 + 3)
+        (kz1, t1) = FindShorCircuit(way, i * 4)
+        (kz2, t2) = FindShorCircuit(way, i * 4 + 1)
+        (kz3, t3) = FindShorCircuit(way, i * 4 + 2)
+        (kz4, t4) = FindShorCircuit(way, i * 4 + 3)
         if kz1 + kz2 + kz3 != 0:
-            return {"Type" : kz1 + kz2 + kz3, "TimeOf": str(max([t1, t2, t3, t4])*100) + 'ms',
+            return {"Type" : ShorCircuitType(kz1, kz2, kz3, kz4), "TimeOf": str(max([t1, t2, t3])*100) + 'ms',
                     "APV":"Успешно","distanceToKZ":"2.145км" }
     return _return
 
 
-def findShorCircuit(file_path, phases):
+def ShorCircuitType(kz1, kz2, kz3, kz0):
+    if kz1+kz2+kz3 == 3:
+        return "Трехфазное КЗ"
+    if kz1+kz2+kz3 == 1:
+        if kz0:
+            return "Двухфазное КЗ на землю"
+        return "Однофазное КЗ"
+    if kz1+kz2+kz3 == 2:
+        return "Двухфазное КЗ"
+    return ""
+
+def FindShorCircuit(file_path, phases):
     rec = Comtrade()
     rec.load(file_path)
     # normal_i = np.mean(np.array(rec.analog[phases]))
@@ -53,7 +64,7 @@ def findShorCircuit(file_path, phases):
     short_circuit = False
     for i in range(0, len(rec.analog[phases]) - 2):
         roll = rec.analog[phases][i: i + 3]
-        roll_type = extremum(roll)
+        roll_type = Extremum(roll)
         if roll_type == 0 or roll_type == 1:
             if abs(roll[1]) - normal_i > normal_delta_i:
                 if not short_circuit:
@@ -66,7 +77,7 @@ def findShorCircuit(file_path, phases):
     return short_circuit, rec.time[time2] - rec.time[time1]
 
 
-def extremum(roll):
+def Extremum(roll):
     if roll[0] < roll[1] > roll[2]:
          return 0  # local max
     if roll[0] > roll[1] < roll[2]:
