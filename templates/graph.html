@@ -11,7 +11,22 @@
 <body>
     {% raw %}
     <div id="app">
-        {{svg}} {{EvristicAnalisis}}
+        {{svg}}
+
+        <div>
+            Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
+        </div>
+
+        <div>
+            Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
+        </div>
+        <div>
+            АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
+        </div>
+        <div>
+            Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
+        </div>
+
         <div v-for="(item, index) in graphs.analog" style="width: 100%;">
             <div style="width: 100%;">
                 <H5>{{item}}</H5>
