@@ -12,28 +12,34 @@
     {% raw %}
     <div id="app">
         {{svg}}
+        <div class="container">
+            <div class="row">
 
-        <div v-if="EvristicAnalisis!= null">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Аналитика</h5>
-                    <p class="card-text">
-                        <div>
-                            Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
-                        </div>
 
-                        <div>
-                            Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
+                <div v-if="EvristicAnalisis!= null">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Аналитика</h5>
+                            <p class="card-text">
+                                <div>
+                                    Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
+                                </div>
+
+                                <div>
+                                    Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
+                                </div>
+                                <div>
+                                    АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
+                                </div>
+                                <div>
+                                    Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
+                                </div>
+                            </p>
                         </div>
-                        <div>
-                            АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
-                        </div>
-                        <div>
-                            Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
-                        </div>
-                    </p>
+                    </div>
                 </div>
             </div>
+
 
         </div>
         <div v-if="graphs!= null">
