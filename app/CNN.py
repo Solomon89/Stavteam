@@ -27,7 +27,7 @@ def SaveAPT2( synaptic_weights):
     #добавить сохраниение сети
     a = 1
 
-def EvristicAnalisis(id, way, numberOfLines):
+def EvristicAnalisis(id, way, analogLineCount):
     _return = {"Type" : 1, "TimeOf":"12ms","APV":"Успешно","distanceToKZ":"2.145км" }
     #dbFunctions.getStatuses() - получение всех статусов {id:{'name':name}}
     return _return
