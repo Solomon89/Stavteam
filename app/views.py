@@ -5,7 +5,7 @@ from flask import abort
 from app import dbFunctions
 from app import graph
 from random import randint
-
+from app import CNN
 
 deleteInterval = 3600
 
@@ -64,10 +64,22 @@ def getMap():
             recorderOutStation = stations[recorderOut['stationId']]
             coordInStation = {'lat': recorderInStation['lat'], 'lon': recorderInStation['lon']}
             coordOutStation = {'lat': recorderOutStation['lat'], 'lon': recorderOutStation['lon']}
-            lines[link] = {'coordInStation': coordInStation,
+            lines[link] = {'recorderIn': recorderIn,
+                           'recorderOut': recorderOut,
+                           'coordInStation': coordInStation,
                            'coordOutStation': coordOutStation}
         return jsonify({'lines': lines,
                         'stations': stations})
+    else:
+        abort(401)
+
+
+@app.route('/getRecorderInfo', methods=['POST'])
+def getRecorderInfo():
+    param = request.get_json()
+    if dbFunctions.checkSession(param['session']):
+        recorders = dbFunctions.getRecorders(True)
+        return jsonify(recorders[param['recoderId']])
     else:
         abort(401)
 
@@ -78,11 +90,11 @@ def graphs(event_id):
 
 
 @app.route('/getgraph/<int:event_id>/<int:id>/<path:typeGraph>')
-def getgraph(event_id =0, id = 0,typeGraph = "analog"):
+def getgraph(event_id=0, id=0, typeGraph="analog"):
     way = dbFunctions.getEventFilePath(event_id)
     way = getWayToRecorderIdStatus()
-    data = graph.GetGraphs(way,id,typeGraph)
-    return  data
+    data = graph.GetGraphs(way, id, typeGraph)
+    return data
 
 
 @app.route('/getgraph/<int:event_id>')
@@ -91,27 +103,31 @@ def getgraphInfo(event_id):
     way = getWayToRecorderIdStatus()
     data = graph.GetGraphInfo(way)
     return jsonify(data)
+@app.route('/getEvristicAnalisis/<int:event_id>')
+def getEvristicAnalisis(event_id):
+    way = getWayToRecorderIdStatus()
+    EvristicAnalisis = CNN.EvristicAnalisis(1,way,3)
+    return {"EvristicAnalisis":EvristicAnalisis}
 
 
 def getWayToRecorderIdStatus():
     id = randint(0, 9)
 
-
-    if(id == 0):
+    if (id == 0):
         return "static//Oscillogramm//04JUL205"
-    elif(id== 1):
+    elif (id == 1):
         return "static//Oscillogramm//04APR163"
-    elif(id== 2):
+    elif (id == 2):
         return "static//Oscillogramm//5DES2019"
-    elif(id== 3):
+    elif (id == 3):
         return "static//Oscillogramm//5DES20192"
-    elif(id== 4):
+    elif (id == 4):
         return "static//Oscillogramm//16DES2019"
-    elif(id== 5):
+    elif (id == 5):
         return "static//Oscillogramm//17DES2019"
-    elif(id== 6):
+    elif (id == 6):
         return "static//Oscillogramm//21DES2019"
-    elif(id== 7):
+    elif (id == 7):
         return "static//Oscillogramm//27DES2019"
-    elif(id== 8):
+    elif (id == 8):
         return "static//Oscillogramm//29NOVEM2019"
