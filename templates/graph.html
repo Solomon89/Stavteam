@@ -13,37 +13,40 @@
     <div id="app">
         {{svg}}
 
-        <div>
-            Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
-        </div>
-
-        <div>
-            Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
-        </div>
-        <div>
-            АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
-        </div>
-        <div>
-            Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
-        </div>
-
-        <div v-for="(item, index) in graphs.analog" style="width: 100%;">
-            <div style="width: 100%;">
-                <H5>{{item}}</H5>
-                <object type="image/html" v-bind:data="'/getgraph/1/'+index+'/analog'" class="logo" style="width: 100%; height:305px"> 
-                   
-                </object>
+        <div v-if="EvristicAnalisis!= null">
+            <div>
+                Тип = {{EvristicAnalisis.EvristicAnalisis.Type}}
             </div>
 
+            <div>
+                Время срабытывания = {{EvristicAnalisis.EvristicAnalisis.TimeOf}}
+            </div>
+            <div>
+                АПВ = {{EvristicAnalisis.EvristicAnalisis.APV}}
+            </div>
+            <div>
+                Расстояние до КЗ = {{EvristicAnalisis.EvristicAnalisis.distanceToKZ}}
+            </div>
         </div>
-        <div v-for="(item, index) in graphs.digital" style="width: 100%;">
-            <div style="width: 100%;">
-
-                <object type="image/svg+xml" v-bind:data="'/getgraph/1/'+index+'/digital'" class="logo" style="width: 100%; height:305px"> 
+        <div v-if="graphs!= null">
+            <div v-for="(item, index) in graphs.analog" style="width: 100%;">
+                <div style="width: 100%;">
+                    <H5>{{item}}</H5>
+                    <object type="image/html" v-bind:data="'/getgraph/1/'+index+'/analog'" class="logo" style="width: 100%; height:305px"> 
                    
                 </object>
-            </div>
+                </div>
 
+            </div>
+            <div v-for="(item, index) in graphs.digital" style="width: 100%;">
+                <div style="width: 100%;">
+
+                    <object type="image/svg+xml" v-bind:data="'/getgraph/1/'+index+'/digital'" class="logo" style="width: 100%; height:305px"> 
+                   
+                </object>
+                </div>
+
+            </div>
         </div>
     </div>
     {% endraw %}
