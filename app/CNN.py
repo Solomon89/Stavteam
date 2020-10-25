@@ -1,4 +1,4 @@
-import tensorflow as tf
+#import tensorflow as tf
 from comtrade import Comtrade
 
 #def TrainCNN(array):
