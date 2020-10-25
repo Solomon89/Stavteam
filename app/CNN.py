@@ -1,13 +1,13 @@
 import tensorflow as tf
 from comtrade import Comtrade
 
-def TrainCNN(array):
-    (x_train, y_train), (x_test, y_test) = array
-    y_train = tf.keras.utils.to_categorical(y_train, num_classes) y_test = tf.keras.utils.to_categorical(y_test, num_classes)
-    model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.Adadelta(), metrics=['accuracy'])
-    vector = model.evaluate(x_test, y_test, verbose=0) 
-    SaveCNN(y_train)
-    return vector
+#def TrainCNN(array):
+    #(x_train, y_train), (x_test, y_test) = array
+    #y_train = tf.keras.utils.to_categorical(y_train, num_classes) y_test = tf.keras.utils.to_categorical(y_test, num_classes)
+   # model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.Adadelta(), metrics=['accuracy'])
+    #vector = model.evaluate(x_test, y_test, verbose=0) 
+    #SaveCNN(y_train)
+    #return vector
 
 def TrainAPT2(Vector):
     from numpy import exp, array, random, dot
