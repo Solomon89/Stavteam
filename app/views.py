@@ -4,7 +4,7 @@ from stavteam import app
 from flask import abort
 from app import dbFunctions
 from app import graph
-
+from random import randint
 
 
 deleteInterval = 3600
@@ -87,12 +87,30 @@ def getgraph(event_id =0, id = 0,typeGraph = "analog"):
 @app.route('/getgraph/<int:event_id>')
 def getgraphInfo(event_id):
     way = dbFunctions.getEventFilePath(event_id)
+    way = getWayToRecorderIdStatus()
     data = graph.GetGraphInfo(way)
     return jsonify(data)
 
 
-#def getWayToRecorderIdStatus(id):
-    #if(id%2 == 0):
-    #    return "static//Oscillogramm//04JUL205"
-    #else:
-    #    return "static//Oscillogramm//04APR163"
+def getWayToRecorderIdStatus():
+    id = randint(0, 9)
+
+
+    if(id == 0):
+        return "static//Oscillogramm//04JUL205"
+    elif(id== 1):
+        return "static//Oscillogramm//04APR163"
+    elif(id== 2):
+        return "static//Oscillogramm//5дек2019_10ч35м39.787c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+    elif(id== 3):
+        return "static//Oscillogramm//5дек2019_14ч52м27.929c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+    elif(id== 4):
+        return "static//Oscillogramm//16дек2019_16ч21м11.866c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+    elif(id== 5):
+        return "static//Oscillogramm//17дек2019_04ч08м23.144c_ПС_Баксан_330[131]_(Пуск_по_65_каналу(U2))"
+    elif(id== 6):
+        return "static//Oscillogramm//21дек2019_17ч04м48.144c_ПС_Баксан_330[131]_(Пуск_по_13_каналу(U2))"
+    elif(id== 7):
+        return "static//Oscillogramm//27дек2019_18ч30м07.915c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+    elif(id== 8):
+        return "static//Oscillogramm//29нояб2019_10ч35м45.303c_ПС_Баксан_330[131]_(Пуск_по_39_каналу(выше_нормы))"
