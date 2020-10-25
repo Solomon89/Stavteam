@@ -5,6 +5,7 @@ from flask import abort
 from app import dbFunctions
 from app import graph
 from random import randint
+from app import CNN
 
 deleteInterval = 3600
 
@@ -102,6 +103,11 @@ def getgraphInfo(event_id):
     way = getWayToRecorderIdStatus()
     data = graph.GetGraphInfo(way)
     return jsonify(data)
+@app.route('/getEvristicAnalisis/<int:event_id>')
+def getEvristicAnalisis(event_id):
+    way = getWayToRecorderIdStatus()
+    EvristicAnalisis = CNN.EvristicAnalisis(1,way,3)
+    return {"EvristicAnalisis":EvristicAnalisis}
 
 
 def getWayToRecorderIdStatus():

@@ -11,7 +11,7 @@
 <body>
     {% raw %}
     <div id="app">
-        {{svg}} {{graphs.EvristicAnalisis}}
+        {{svg}} {{EvristicAnalisis}}
         <div v-for="(item, index) in graphs.analog" style="width: 100%;">
             <div style="width: 100%;">
                 <H5>{{item}}</H5>
@@ -48,7 +48,8 @@
             data() {
                 return {
                     graphs: null,
-                    svg: null
+                    svg: null,
+                    EvristicAnalisis: null
                 };
             },
 
@@ -56,6 +57,9 @@
                 axios
                     .get('/getgraph/1')
                     .then(response => (this.graphs = response.data))
+                axios
+                    .get('/getEvristicAnalisis/1')
+                    .then(response => (this.EvristicAnalisis = response.data))
             }
         })
     </script>
