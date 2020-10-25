@@ -80,6 +80,7 @@ def graphs(event_id):
 @app.route('/getgraph/<int:event_id>/<int:id>/<path:typeGraph>')
 def getgraph(event_id =0, id = 0,typeGraph = "analog"):
     way = dbFunctions.getEventFilePath(event_id)
+    way = getWayToRecorderIdStatus()
     data = graph.GetGraphs(way,id,typeGraph)
     return  data
 
@@ -101,16 +102,16 @@ def getWayToRecorderIdStatus():
     elif(id== 1):
         return "static//Oscillogramm//04APR163"
     elif(id== 2):
-        return "static//Oscillogramm//5дек2019_10ч35м39.787c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+        return "static//Oscillogramm//5DES2019"
     elif(id== 3):
-        return "static//Oscillogramm//5дек2019_14ч52м27.929c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+        return "static//Oscillogramm//5DES20192"
     elif(id== 4):
-        return "static//Oscillogramm//16дек2019_16ч21м11.866c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+        return "static//Oscillogramm//16DES2019"
     elif(id== 5):
-        return "static//Oscillogramm//17дек2019_04ч08м23.144c_ПС_Баксан_330[131]_(Пуск_по_65_каналу(U2))"
+        return "static//Oscillogramm//17DES2019"
     elif(id== 6):
-        return "static//Oscillogramm//21дек2019_17ч04м48.144c_ПС_Баксан_330[131]_(Пуск_по_13_каналу(U2))"
+        return "static//Oscillogramm//21DES2019"
     elif(id== 7):
-        return "static//Oscillogramm//27дек2019_18ч30м07.915c_ПС_Баксан_330[131]_(Пуск_по_37_каналу(выше_нормы))"
+        return "static//Oscillogramm//27DES2019"
     elif(id== 8):
-        return "static//Oscillogramm//29нояб2019_10ч35м45.303c_ПС_Баксан_330[131]_(Пуск_по_39_каналу(выше_нормы))"
+        return "static//Oscillogramm//29NOVEM2019"
