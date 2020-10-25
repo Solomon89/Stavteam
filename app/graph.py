@@ -5,7 +5,7 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 from comtrade import Comtrade, Cfg
 from mpld3 import fig_to_html, plugins
-
+from app import CNN
 
 # C:\\data\\04APR163.cfg", "C:\\data\\04APR163.dat
 def GetGraphs(way, id, type):
@@ -36,7 +36,8 @@ def GetGraphs(way, id, type):
 def GetGraphInfo(way):
     rec = Comtrade()
     rec.load(way + ".cfg", way + ".dat")
-    data = {"analog" : rec.analog_channel_ids[:10], "digital" : rec.digital_channel_ids[:6], "time": format(rec.trigger_time), "name":rec.station_name, "time_base" : rec.time_base}
+    EvristicAnalisis = CNN.EvristicAnalisis(1,way,3)
+    data = {"analog" : rec.analog_channel_ids[:10], "digital" : rec.digital_channel_ids[:6], "time": format(rec.trigger_time), "name":rec.station_name, "time_base" : rec.time_base, "EvristicAnalisis":EvristicAnalisis}
     return data
 
 

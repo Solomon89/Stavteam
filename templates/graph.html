@@ -11,12 +11,11 @@
 <body>
     {% raw %}
     <div id="app">
-        {{svg}}
-
+        {{svg}} {{graphs.EvristicAnalisis}}
         <div v-for="(item, index) in graphs.analog" style="width: 100%;">
             <div style="width: 100%;">
                 <H5>{{item}}</H5>
-                <object type="image/svg+xml" v-bind:data="'/getgraph/1/'+index+'/analog'" class="logo" style="width: 100%; height:305px"> 
+                <object type="image/html" v-bind:data="'/getgraph/1/'+index+'/analog'" class="logo" style="width: 100%; height:305px"> 
                    
                 </object>
             </div>
